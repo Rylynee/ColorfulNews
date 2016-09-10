@@ -52,6 +52,8 @@ public class SplashActivity extends AppCompatActivity {
     boolean isShowingRubberEffect = false;
     @BindView(R.id.app_name_tv)
     TextView mAppNameTv;
+    
+    private boolean checkKeyDown;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -114,10 +116,21 @@ public class SplashActivity extends AppCompatActivity {
                 .subscribe(new Action1<Long>() {
                     @Override
                     public void call(Long aLong) {
-                        startActivity(new Intent(SplashActivity.this, NewsActivity.class));
-                        overridePendingTransition(0, android.R.anim.fade_out);
+                        if(!checkKeyDown) {
+                            startActivity(new Intent(SplashActivity.this, NewsActivity.class));
+                            overridePendingTransition(0, android.R.anim.fade_out);
+                        }
                         finish();
                     }
                 });
     }
+    
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        if(keyCode == KeyEvent.KEYCODE_BACK)
+            checkKeyDown = true;
+        return super.onKeyDown(keyCode, event);
+    }
+    
 }
